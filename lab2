@@ -33,7 +33,6 @@ if [[ $# -eq 3 ]]; then
 	program=$3
 	absprogdirectory=$(realpath "$program") # Get absolute path to PROGRAM.
 	echo "$absprogdirectory"
-	exit 1
 fi
 
 # Move into the directory that they supplied.
@@ -42,17 +41,25 @@ if ! cd "$rootdirectory" 2> /dev/null; then
 	exit 1
 fi
 
-# We need to check each file in the directory and see if 
-# it contains PATTERN. If so, and if PROGRAM was supplied, 
-# we need to run the PROGRAM on it. Otherwise we print out 
-# the relative path.
-for file in .* *; do
-	if  grep -q "$pattern" "$file" 2> /dev/null; then
-		echo "RUN PROGRAM"
-	else
-		echo "DON'T RUN PROGRAM"
-	fi
-done
+# If the PROGRAM parameter was not used (2 parameters), we need to print out the 
+# relative path of the file to ROOT_DIRECTORY.
+if [[ $# -eq 2 ]]; then
+	for file in .* *; do
+		if  grep -q "$pattern" "$file" 2> /dev/null; then
+			echo "$file"
+		fi
+	done
+
+# If the PROGRAM parameter is used (3 parameters), we need to call the program
+# with the full path of a matched file as the only input.
+else
+	for file in .* *; do
+		if  grep -q "$pattern" "$file" 2> /dev/null; then
+			scriptcommand="$absprogdirectory $(pwd)/$file"
+			sh $scriptcommand
+		fi
+	done
+fi
 
 exit 0
 
