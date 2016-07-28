@@ -26,23 +26,24 @@ fi
 rootdirectory=$1
 pattern=$2
 
-# If the optional paramater was given, assign a name to it. 
-# We also need to find it prior to changing directories in the 
-# event that it was a relative path.
+# If PROGRAM is given, then we need to give it a name and store 
+# the absolute path prior to moving directories.
 if [[ $# -eq 3 ]]; then
 	program=$3
-	absprogdirectory=$(realpath "$program") # Get absolute path to PROGRAM.
-	echo "$absprogdirectory"
+	if ! absprogdirectory=$(realpath "$program" 2> /dev/null); then
+		echo "$program: The program that you have specified cannot be found."
+		exit 1
+	fi
 fi
 
 # Move into the directory that they supplied.
-if ! cd "$rootdirectory" 2> /dev/null; then
+if ! cd "$rootdirectory" &> /dev/null; then
 	echo "Error attempting to enter the directory supplied. Are you sure that is the correct path or that  \"$rootdirectory\" is a directory?"
 	exit 1
 fi
 
-# If the PROGRAM parameter was not used (2 parameters), we need to print out the 
-# relative path of the file to ROOT_DIRECTORY.
+# If the PROGRAM parameter was not used (2 parameters), we need 
+#to print out the relative path of the file to ROOT_DIRECTORY.
 if [[ $# -eq 2 ]]; then
 	for file in .* *; do
 		if  grep -q "$pattern" "$file" 2> /dev/null; then
