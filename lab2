@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Author: Taylor Flatt
+#
+# Version 1 will find any files in ROOT_DIRECTORY whose content 
+# matches PATTERN and will optionally run a program on that file 
+# or simply print out the relative location of the file if 
+# PROGRAM isn't supplied.
+#
+#
+# Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]
+
+if [[ $# < 2 ]]; then
+    echo "Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]"
+    exit 1
+fi
+
+if [[ $# > 3 ]]; then
+	echo "Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]"
+	exit 1
+fi
+
+exit 0
+
+# EOF
