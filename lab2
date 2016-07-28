@@ -7,7 +7,6 @@
 # or simply print out the relative location of the file if 
 # PROGRAM isn't supplied.
 #
-#
 # Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]
 
 # Check for too few parameters.
@@ -43,7 +42,7 @@ if ! cd "$rootdirectory" &> /dev/null; then
 fi
 
 # If the PROGRAM parameter was not used (2 parameters), we need 
-#to print out the relative path of the file to ROOT_DIRECTORY.
+# to print out the relative path of the file to ROOT_DIRECTORY.
 if [[ $# -eq 2 ]]; then
 	for file in .* *; do
 		if  grep -q "$pattern" "$file" 2> /dev/null; then
