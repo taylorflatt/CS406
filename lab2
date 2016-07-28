@@ -10,15 +10,42 @@
 #
 # Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]
 
+# Check for too few parameters.
 if [[ $# < 2 ]]; then
     echo "Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]"
     exit 1
 fi
 
+# Check for too many parameters.
 if [[ $# > 3 ]]; then
 	echo "Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]"
 	exit 1
 fi
+
+# Assign names to the parameters.
+rootdirectory=$1
+pattern=$2
+
+# If the optional paramater was given, assign a name to it.
+if [[ $# -eq 3 ]]; then
+	program=$3
+	echo $program
+	exit 1
+fi
+
+# Move into the directory that they supplied.
+if ! cd "$rootdirectory" 2> /dev/null; then
+	echo "Error attempting to enter the directory supplied. Are you sure that is the correct path or that  \"$rootdirectory\" is a directory?"
+	exit 1
+fi
+
+# We need to check each file in the directory and see if 
+# it contains PATTERN. If so, and if PROGRAM was supplied, 
+# we need to run the PROGRAM on it. Otherwise we print out 
+# the relative path.
+for file in .* *; do
+	grep "$pattern" "$file"
+done
 
 exit 0
 
