@@ -26,10 +26,13 @@ fi
 rootdirectory=$1
 pattern=$2
 
-# If the optional paramater was given, assign a name to it.
+# If the optional paramater was given, assign a name to it. 
+# We also need to find it prior to changing directories in the 
+# event that it was a relative path.
 if [[ $# -eq 3 ]]; then
 	program=$3
-	echo $program
+	absprogdirectory=$(realpath "$program") # Get absolute path to PROGRAM.
+	echo "$absprogdirectory"
 	exit 1
 fi
 
@@ -44,7 +47,11 @@ fi
 # we need to run the PROGRAM on it. Otherwise we print out 
 # the relative path.
 for file in .* *; do
-	grep "$pattern" "$file"
+	if  grep -q "$pattern" "$file" 2> /dev/null; then
+		echo "RUN PROGRAM"
+	else
+		echo "DON'T RUN PROGRAM"
+	fi
 done
 
 exit 0
