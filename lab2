@@ -7,6 +7,7 @@
 # or simply print out the relative location of the file if 
 # PROGRAM isn't supplied.
 #
+#
 # Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]
 
 # Check for too few parameters.
@@ -24,6 +25,7 @@ fi
 # Assign names to the parameters.
 rootdirectory=$1
 pattern=$2
+found=false
 
 # If PROGRAM is given, then we need to give it a name and store 
 # the absolute path prior to moving directories.
@@ -46,7 +48,8 @@ fi
 if [[ $# -eq 2 ]]; then
 	for file in .* *; do
 		if  grep -q "$pattern" "$file" 2> /dev/null; then
-			echo "$file"
+			found=true
+			echo "./$file"
 		fi
 	done
 
@@ -55,10 +58,16 @@ if [[ $# -eq 2 ]]; then
 else
 	for file in .* *; do
 		if  grep -q "$pattern" "$file" 2> /dev/null; then
+			found=true
 			scriptcommand="$absprogdirectory $(pwd)/$file"
 			sh $scriptcommand
 		fi
 	done
+fi
+
+# If nothing was found, let the user know.
+if ! $found -eq true; then
+	echo -e "$pattern: Did not match the contents of any file in the search directory."
 fi
 
 exit 0
