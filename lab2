@@ -65,7 +65,7 @@ else
 fi
 
 # If nothing was found, let the user know.
-if ! $found -eq true; then
+if ! "$found" -eq true; then
 	echo -e "$pattern: Did not match the contents of any file in the search directory."
 fi
 
