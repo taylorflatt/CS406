@@ -7,7 +7,7 @@
 # or simply print out the relative location of the file if 
 # PROGRAM isn't supplied.
 #
-# Usage: findtext ROOT_DIRECTORY PATTERN [PROGRAM]
+# Usage: ./findtext ROOT_DIRECTORY PATTERN [PROGRAM]
 
 # Check for too few parameters.
 if [[ $# < 2 ]]; then
